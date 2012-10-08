@@ -3605,7 +3605,7 @@ Zd.SearchMenu = Em.Object.extend().reopenClass({
 
     this.dataSource.onDataReady = _(this.onDataReady).bind(this);
 
-    this.searchDataSource = this.searchDataSource || new Zd.FilteringDataSource(this, this.maxSearchResults);
+    this.searchDataSource = this.searchDataSource || new Zd.FilteringDataSource(this.maxSearchResults, 'label');
 
     this.searchDataSource.onDataReady = _(function(data) {
       if (!this.menu) {return;}
@@ -4004,7 +4004,7 @@ Zd.SearchMenu = Em.Object.extend().reopenClass({
     if (this.state === 'display') {
       this.setState('search');
     }
-    this.searchDataSource.filter(this.domBase.val());
+    this.searchDataSource.filter(this, this.domBase.val());
     this.trigger('input', e);
   },
 
@@ -4063,7 +4063,7 @@ Zd.RemoteSearchDataSource = Em.Object.extend({
     this.onDataReady(this.data);
   },
 
-  filter: function(filterWord) {
+  filter: function(source, filterWord) {
     if (filterWord == null || filterWord === '') {
       this.filterWord = '';
       this.abort();
